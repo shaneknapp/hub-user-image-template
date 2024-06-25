@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DOCKER_CONFIG: $HOME/.docker
-      HUB: <HUBNAME>
+      HUB: <HUBNAME> # change this to the name of the hub the images will be deployed to
 
     steps:
       - name: Test changed-files
