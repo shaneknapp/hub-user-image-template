@@ -1,0 +1,83 @@
+name: Build and push container image
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_CONFIG: $HOME/.docker
+      HUB: <HUBNAME> # change this to the name of the hub the images will be deployed to
+
+    steps:
+      - name: Test changed-files
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # OR "2" -> To retrieve the preceding commit.
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v44
+        with:
+          files: |
+            **.bash
+            **.py
+            **.r
+            **.R
+            **.sh
+            **.txt
+            **.toml
+            **.yaml
+            **.yml
+            Dockerfile
+            infra-requirements.txt
+            Pipfile**
+            postBuild
+            requirements.txt
+            setup.py
+            start
+          files_ignore: |
+            .github/**
+            images/**
+      # NOTE: `since_last_remote_commit: true` is implied by default and falls back to the previous local commit.
+
+      # For biggish images, github actions runs out of disk space.
+      # So we cleanup some unwanted things in the disk image, and reclaim that space for our docker use
+      # https://github.com/actions/virtual-environments/issues/2606#issuecomment-772683150
+      # and https://github.com/easimon/maximize-build-space/blob/b4d02c14493a9653fe7af06cc89ca5298071c66e/action.yml#L104
+      # This gives us a total of about 52G of free space, which should be enough for now
+      - name: cleanup disk space
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc
+          df -h
+
+      - name: Log in to GAR
+        if: steps.changed-files.outputs.any_changed == 'true'
+        uses: docker/login-action@v1
+        with:
+          registry: us-central1-docker.pkg.dev
+          username: _json_key
+          password: ${{ secrets.GAR_SECRET_KEY }}
+
+      - name: Build the image and push to artifact registry
+        if: steps.changed-files.outputs.any_changed == 'true'
+        uses: jupyterhub/repo2docker-action@master
+        with:
+          # Make sure username & password/token pair matches your registry credentials
+          DOCKER_REGISTRY: us-central1-docker.pkg.dev
+          IMAGE_NAME: ucb-datahub-2018/user-images/$HUB-user-image
+          # Disable pushing a 'latest' tag, as this often just causes confusion
+          # LATEST_TAG_OFF: true
+          # Put repo contents in /srv/repo, rather than the default (/home/jovyan). The home directory
+          # is mounted over by persistent storage when we are using the built image in a JupyterHub, and
+          # so all contents put in /home/jovyan are lost. This particularly prevents any 'start' script from
+          # working, as it is needed in runtime.
+          REPO_DIR: /srv/repo
+
+      # Lets us monitor disks getting full as images get bigger over time
+      - name: Show how much disk space is left
+        run: df -h
