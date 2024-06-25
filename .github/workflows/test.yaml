@@ -1,0 +1,67 @@
+name: Build and test container image
+
+on:
+  pull_request:
+
+jobs:
+  test-build:
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_CONFIG: $HOME/.docker
+
+    steps:
+      # For biggish images, github actions runs out of disk space.
+      # So we cleanup some unwanted things in the disk image, and reclaim that space for our docker use
+      # https://github.com/actions/virtual-environments/issues/2606#issuecomment-772683150
+      # and https://github.com/easimon/maximize-build-space/blob/b4d02c14493a9653fe7af06cc89ca5298071c66e/action.yml#L104
+      # This gives us a total of about 52G of free space, which should be enough for now
+      - name: Cleanup disk space
+        run: |
+          sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc
+          df -h
+
+      - name: Checkout files in repo
+        uses: actions/checkout@v4
+
+      - name: See if the image config changed
+        id: changed-files
+        uses: tj-actions/changed-files@v44
+        with:
+            files: |
+              **.bash
+              **.py
+              **.r
+              **.R
+              **.sh
+              **.txt
+              **.toml
+              **.yaml
+              **.yml
+              Dockerfile
+              infra-requirements.txt
+              Pipfile**
+              postBuild
+              requirements.txt
+              setup.py
+              start
+            files_ignore: |
+              .github/**
+              images/**
+
+      - name: What files changed?
+        if: steps.changed-files.outputs.any_changed == 'true'
+        env:
+            CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
+        run: |
+            echo "One or more image file(s) has changed:"
+            echo "$CHANGED_FILES"
+
+      - name: Build and test the image if any image file changed
+        if: steps.changed-files.outputs.any_changed == 'true'
+        uses: jupyterhub/repo2docker-action@master
+        with:
+          REPO_DIR: /srv/repo
+
+      # Lets us monitor disks getting full as images get bigger over time
+      - name: Show how much disk space is left
+        run: df -h
