@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DOCKER_CONFIG: $HOME/.docker
-      HUB: logodev
+      HUB: <HUBNAME>
 
     steps:
       - name: Test changed-files
