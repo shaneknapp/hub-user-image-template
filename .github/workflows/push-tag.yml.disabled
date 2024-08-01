@@ -1,0 +1,27 @@
+name: Push a new tag to datahub repo
+on:
+  workflow_dispatch:
+
+jobs:
+  push-tag:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Check out the datahub repo
+      - name: Check out the datahub repo
+        uses: actions/checkout@v4
+        with:
+          repository: berkeley-dsep-infra/datahub
+          ref: staging
+          token: ${{ secrets.PUSH_TAG_TOKEN }}
+          path: datahub
+
+      - name: Push tag to datahub repo
+        run: |
+            tag=$(date '+%Y%m%d-%H%M%S')
+            cd datahub/
+
+            git config user.name "GitHub Action"
+            git config user.email "action@github.com"
+            git tag ${tag}
+            git push origin ${tag}
