@@ -98,11 +98,11 @@ jobs:
       - name: Create feature branch, add, commit and push changes
         if: ${{ env.IMAGE_TAG }}
         run: |
-          CHANGED_FILES=$(git status --porcelain -uno)
+          CHANGED_FILES=$(git status --porcelain -uno | awk '{print $2}')
           git diff
           git checkout -b update-${HUB}-image-tag-${IMAGE_TAG}
           # to be safe, only add files that have changed
-          for file in $(echo ${CHANGED_FILES} | awk '{print $2}'); do
+          for file in $(echo -e ${CHANGED_FILES}); do
             git add ${file}
           done
           git commit -m "update ${HUB} image tag to ${IMAGE_TAG}: ${CHANGED_FILES}"
