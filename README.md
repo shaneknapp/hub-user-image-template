@@ -22,10 +22,12 @@ Checkout the 2i2c docs for an in-depth guide on how to use this template reposit
 
 Here's a rough guide on how to create your own fresh user image :arrow_right: https://docs.datahub.berkeley.edu/en/latest/admins/howto/new-image.html.
 
-After forking this repo and bringing in the commit history (if any) of the image, you will need to set two [Github Actions Repository Variables](https://docs.github.com/en/actions/learn-github-actions/variables) for the image:  `HUB` and `IMAGE`.
+After forking this repo and bringing in the commit history (if any) of the image, you will need to set two [Github Actions Repository Variables](https://docs.github.com/en/actions/learn-github-actions/variables) for the image: `HUB` and `IMAGE`.
 
 `HUB` is the short name of the hub (eg: `data100`, `datahub`, etc).
 `IMAGE` is the path to the image in the Artifact Registry (eg: `ucb-datahub-2018/user-images/<hubname>-user-image`)
+
+Next, you will need to give the newly forked repo access to two organizational-level [secrets in the berkeley-dsep-infra repo](https://github.com/organizations/berkeley-dsep-infra/settings/secrets/actions): `GAR_SECRET_KEY` (to allow pushes to the Artifact Registry) and `DATAHUB_USER_IMAGE_BRANCH_PUSH` (to allow commits to be pushed to the [datahub](https://github.com/berkeley-dsep-infra/datahub) repo).
 
 ## About this template repository :information_source:
 
