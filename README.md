@@ -16,6 +16,11 @@ The overall workflow is to:
 
 4. Configure your Hub to use this new image
 
+### Modifying the new image
+
+Detailed instructions showing the workflow to modify an image and push it
+the CI/CD workflow are located in the [contribution guide](CONTRIBUTING.md)
+
 ### In-depth guide
 
 Checkout the 2i2c docs for an in-depth guide on how to use this template repository to create a custom user image and use it for your hub :arrow_right: https://infrastructure.2i2c.org/howto/update-env/#split-up-an-image-for-use-with-the-repo2docker-action.
@@ -42,6 +47,10 @@ The `repo2docker-action` will update the [base repo2docker](https://github.com/j
 
 **Note:**
 A complete list of possible configuration files that can be added to the repository and be used by repo2docker to build the Docker image, can be found in the [repo2docker docs](https://repo2docker.readthedocs.io/en/latest/config_files.html#configuration-files).
+
+### Making changes to a single user server image
+
+Once you've created the new image repo from this template, please refer to [the contribution instructions](CONTRIBUTING.md) located in the repo for detailed instructions.
 
 ### The GitHub Action workflows
 
