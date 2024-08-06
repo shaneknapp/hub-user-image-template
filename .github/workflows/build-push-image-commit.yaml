@@ -29,6 +29,7 @@ jobs:
         uses: tj-actions/changed-files@v44
         with:
           files_ignore: |
+            README.md
             .github/**
             images/**
 
