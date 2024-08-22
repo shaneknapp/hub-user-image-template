@@ -29,7 +29,6 @@ jobs:
         uses: tj-actions/changed-files@v44
         with:
           files_ignore: |
-            README.md
             .github/**
             images/**
 
@@ -73,7 +72,7 @@ jobs:
         if: ${{ env.IMAGE_TAG }}
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.DATAHUB_USER_IMAGE_BRANCH_PUSH }}
+          token: ${{ secrets.DATAHUB_CREATE_PR }}
           fetch-depth: 0
           repository: 'berkeley-dsep-infra/datahub'
           sparse-checkout: |
