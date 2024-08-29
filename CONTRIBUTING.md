@@ -9,6 +9,11 @@ a fork.  To do this, click on the `fork` button and then `Create fork`.
 
 ![Forking](images/create-fork.png)
 
+
+After you create your fork of the new image repository, you should disable Github Actions **only for your fork**.  To do this, navigate to `Settings` --> `Actions` --> `General` and select `Disable actions`.  Then click `Save`:
+
+![Disable fork actions](images/disable-fork-actions.png)
+
 Now clone the primary image repo on your local device.  You can get the URL to do
 this by clicking on the green `Code` button in the primary image repo (*not* your fork)
 and clicking on `SSH` and copying the text located therein:
@@ -59,10 +64,10 @@ to making changes. This is because other contributors may have pushed changes
 after you last synced with this repo but before you upstreamed your changes.
 
 ```
-git checkout staging && \
+git checkout main && \
 git fetch --prune --all && \
-git rebase upstream/staging && \
-git push origin staging
+git rebase upstream/main && \
+git push origin main
 ```
 
 To create a new feature branch and switch to it, run the following command:
@@ -105,8 +110,8 @@ description if needed and then click `Create pull request`.
 
 If you're having issues, you can refer to the [github documentation for pull
 requests](https://help.github.com/articles/about-pull-requests/).
-The choice for `base` in the GitHub PR user interface should be the staging
-branch of this repo while the choice for `head` is your fork.
+The choice for `base` in the GitHub PR user interface should be the `staging`
+branch of the Datahub repo while the choice for `head` is your fork.
 
 Once this is complete and if there are no problems, a github action will
 automatically [build and test](https://github.com/berkeley-dsep-infra/hub-user-image-template/blob/main/.github/workflows/build-test-image.yaml)
