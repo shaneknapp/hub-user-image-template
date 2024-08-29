@@ -9,6 +9,11 @@ a fork.  To do this, click on the `fork` button and then `Create fork`.
 
 ![Forking](images/create-fork.png)
 
+
+After you create your fork of the new image repository, you should disable Github Actions **only for your fork**.  To do this, navigate to `Settings` --> `Actions` --> `General` and select `Disable actions`.  Then click `Save`:
+
+![Disable fork actions](images/disable-fork-actions.png)
+
 Now clone the primary image repo on your local device.  You can get the URL to do
 this by clicking on the green `Code` button in the primary image repo (*not* your fork)
 and clicking on `SSH` and copying the text located therein:
