@@ -6,15 +6,19 @@ This is a template repository for creating dedicated user images for UC Berkeley
 
 The overall workflow is to:
 
-1. Fork this repository to create your image repository
+1. Create a new repository using this one as a template.  Be sure to set the owner as `berkeley-dsep-infra`.
 
-2. Hook your image repository to Google Artifact Registry
+2. Fork that repository to create your image repository (optional, but recommended).
 
-3. Customize the image by editing repo2docker files in your image repository.
+3. Set the appropriate values in the Actions environment variables for `HUB` and `IMAGE`.
 
-   Changes can either be done by direct commits to main on your image repository, or through a pull request from a fork of your image repository. Direct commits will build the image and push it to GAR. PRs will build the image and offer a link to test it using Binder (currently disabled). Merging the PR will cause a commit on main and therefore trigger a build and push to GAR.
+4. Customize the image by editing repo2docker files in your image repository.
 
-4. Configure your Hub to use this new image
+   Changes can either be done by direct commits to main on your image repository, or through a pull request from a fork of your image repository. Direct commits will build the image and push it to Google Artifact Registry (GAR) on merge. PRs will also build the image and offer a link to test it using Binder (currently disabled). Merging the PR will also create and push a commit to the [datahub repo](https://github.com/berkeley-dsep-infra/datahub/), which requires a human to open a PR to merge said commit and deploy that image to the proper hub(s).
+
+5. Configure your Hub to use this new image
+
+More detailed instructions are [located below](https://github.com/berkeley-dsep-infra/hub-user-image-template/#in-depth-guide).
 
 ### Modifying the new image
 
@@ -23,16 +27,16 @@ the CI/CD workflow are located in the [contribution guide](CONTRIBUTING.md)
 
 ### In-depth guide
 
-Checkout the 2i2c docs for an in-depth guide on how to use this template repository to create a custom user image and use it for your hub :arrow_right: https://infrastructure.2i2c.org/howto/update-env/#split-up-an-image-for-use-with-the-repo2docker-action.
+Check out the 2i2c docs for an in-depth guide on how to use this template repository to create a custom user image and use it for your hub :arrow_right: https://infrastructure.2i2c.org/howto/update-env/#split-up-an-image-for-use-with-the-repo2docker-action.
 
 Here's a rough guide on how to create your own fresh user image :arrow_right: https://docs.datahub.berkeley.edu/en/latest/admins/howto/new-image.html.
 
-After forking this repo and bringing in the commit history (if any) of the image, you will need to set two [Github Actions Repository Variables](https://docs.github.com/en/actions/learn-github-actions/variables) for the image: `HUB` and `IMAGE`.
+After creating a new image repo from here as a template, and bringing in the commit history (if any) of the image, you will need to set two [Github Actions Repository Variables](https://docs.github.com/en/actions/learn-github-actions/variables) for the image: `HUB` and `IMAGE`.
 
 `HUB` is the short name of the hub (eg: `data100`, `datahub`, etc).
 `IMAGE` is the path to the image in the Artifact Registry (eg: `ucb-datahub-2018/user-images/<hubname>-user-image`)
 
-Next, you will need to give the newly forked repo access to two organizational-level [secrets in the berkeley-dsep-infra repo](https://github.com/organizations/berkeley-dsep-infra/settings/secrets/actions): `GAR_SECRET_KEY` (to allow pushes to the Artifact Registry) and `DATAHUB_USER_IMAGE_BRANCH_PUSH` (to allow commits to be pushed to the [datahub](https://github.com/berkeley-dsep-infra/datahub) repo).
+Next, you will need to give the newly created repo access to two organizational-level [secrets in the berkeley-dsep-infra repo](https://github.com/organizations/berkeley-dsep-infra/settings/secrets/actions): `GAR_SECRET_KEY` (to allow pushes to the Artifact Registry) and `DATAHUB_USER_IMAGE_BRANCH_PUSH` (to allow commits to be pushed to the [datahub](https://github.com/berkeley-dsep-infra/datahub) repo).
 
 ## About this template repository :information_source:
 
@@ -67,12 +71,12 @@ During PR builds, the image is **only** built and **not** pushed, unless explici
 
 *Temporarily disabled*
 
-Since our images are typically large and take > 10m to build, our Binder builds will currently time out.
+Since our images are typically large and take > 10m to build, this means that Binderhub builds will currently time out.
 
 This workflow posts a comment inside a pull request, every time a pull request gets opened. The comment contains a "Test this PR on Binder" badge, which can be used to access the image defined by the PR in [mybinder.org](https://mybinder.org/).
 
 ![Test this PR on Binder](images/binder-badge.png)
 
-#### 3. Build, test and push container image :arrow_right: [build-push-open-pr.yaml](https://github.com/berkeley-dsep-infra/hub-user-image-template/blob/main/.github/workflows/build-push-open-pr.yaml)
+#### 3. Build, test and push container image :arrow_right: [build-push-open-pr.yaml](https://github.com/berkeley-dsep-infra/hub-user-image-template/blob/main/.github/workflows/build-push-image-commit.yaml)
 
 After a PR is merged to `main`, this workflow builds the image again, pushes to the Artifact Registry and will create a push to the [Datahub repo](https://github.com/berkeley-dsep-infra/datahub) to update the image tag for any hubs that use this image.  The PR there will need to be created manually.
