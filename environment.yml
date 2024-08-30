@@ -1,4 +1,4 @@
-name: nature
+name: default-datahub-user-image
 
 channels:
 - conda-forge
