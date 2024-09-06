@@ -110,8 +110,8 @@ description if needed and then click `Create pull request`.
 
 If you're having issues, you can refer to the [github documentation for pull
 requests](https://help.github.com/articles/about-pull-requests/).
-The choice for `base` in the GitHub PR user interface should be the `staging`
-branch of the Datahub repo while the choice for `head` is your fork.
+Keep the choice for `base` in the GitHub PR user interface, while the choice
+for `head` is your fork.
 
 Once this is complete and if there are no problems, a github action will
 automatically [build and test](https://github.com/berkeley-dsep-infra/hub-user-image-template/blob/main/.github/workflows/build-test-image.yaml)
