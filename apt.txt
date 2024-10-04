@@ -8,6 +8,7 @@ less
 curl
 wget
 vim
+emacs
 
 # for easily managing multiple repositories with one command (perl-doc
 # is needed for its help pages to work)
