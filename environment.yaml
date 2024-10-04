@@ -5,17 +5,20 @@ channels:
   - conda-forge
 
 dependencies:
+  # Items required for basic level functionality
+  - gh-scoped-creds==4.1
+  - git==2.46.0
+  - jupyter-resource-usage=1.1.0
+  - jupyterhub==4.1.6
+  - jupyterlab==4.2.5
+  - jupyter_server==2.14.2
+  - jupyterlab-git==0.50.1
+  - jupytext==1.16.4
+  - nbgitpuller==1.2.1
+  - notebook==7.2.2
+  - python==3.11.*
+  - pip==24.2
 
-# Items required for basic level functionality
-- python==3.11.*
-- git==2.46.0
-- jupyter-resource-usage=1.1.0
-- jupyterhub==4.1.6
-- jupyterlab==4.2.5
-- jupyter_server==2.14.2
-- notebook==7.2.2
-- nbgitpuller==1.2.1
- 
-- pip==24.2
-- pip:
-  - nbconvert[webpdf]==7.16.4
+  # pip installed packages, conda is preferred
+  - pip:
+    - nbconvert[webpdf]==7.16.4
