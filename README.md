@@ -84,7 +84,7 @@ new SHA tag.
 
 #### 1. Build and test container image :arrow_right: [test.yaml](https://github.com/berkeley-dsep-infra/hub-user-image-template/blob/main/.github/workflows/test.yaml)
 
-This workflow is triggered when a Pull Request is opened against the default
+This workflow is triggered when a pull request is opened against the default
 branch (`main`). During PR builds, the image is **only** built and **not**
 pushed to the Google Artifact Registry.
 
@@ -93,7 +93,7 @@ Please note that the image will not be built for documentation changes
 
 #### 2. YAML linting :arrow:_right: [yaml-lint.yaml](https://github.com/berkeley-dsep-infra/hub-user-image-template/blob/main/.github/workflows/yaml-lint.yaml)
 
-This workflow is triggered when a Pull Request is opened against the default
+This workflow is triggered when a pull request is opened against the default
 branch (`main`). It uses [yamllint](https://yamllint.readthedocs.io/en/stable/)
 to check all yaml files in the repo for correctness.
 
