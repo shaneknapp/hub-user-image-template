@@ -7,7 +7,7 @@ channels:
 dependencies:
   # Items required for basic level functionality
   - gh-scoped-creds==4.1
-  - git==2.46.0
+  - git==2.47.0
   - jupyter-resource-usage==1.1.0
   - jupyterhub==4.1.6
   - jupyterlab==4.2.5
