@@ -1,5 +1,6 @@
 name: Build and push container image, and push update to datahub repo if needed
 on:
+  workflow_dispatch:
   push:
     branches:
       - main

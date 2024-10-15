@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# installing chromium browser to enable webpdf conversion using nbconvert
+export PLAYWRIGHT_BROWSERS_PATH=${CONDA_DIR}
+playwright install chromium
+
+# https://github.com/berkeley-dsep-infra/datahub/issues/5827
+git config --system pull.rebase false
