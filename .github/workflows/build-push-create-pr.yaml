@@ -130,6 +130,7 @@ jobs:
           EOF
           BODY=$(cat ${HOME}/pr-body.txt)
           gh pr new -t "${MESSAGE}" -b "${BODY}" -H${BRANCH} -Bstaging
+
       - name: Print out a message if no PR is created
         if: ${{ ! env.IMAGE_TAG }}
         run: |
