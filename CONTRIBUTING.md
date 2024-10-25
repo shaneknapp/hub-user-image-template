@@ -64,7 +64,29 @@ git push origin main
 
 ### High-level overview of the full process
 
-![CI/CD workflow](images/ci-cd-workflow.svg)
+```mermaid
+%% State diagram documentation at
+%% https://mermaid.js.org/syntax/stateDiagram.html
+
+stateDiagram-v2
+    image_repo: github.com/berkeley-dsep-infra/hubname-user-image
+    forked_repo: github.com/github-username/hubname-user-image
+    image_test_build: Image is built and tested
+    image_push_build: Image is built and pushed to registry
+    pr_created: A pull request is automatically created in the Datahub repo
+    deploy_to_staging: Hub is deployed to staging
+    contributor_tests: The contributor logs into the staging hub and tests the image.
+    deploy_to_prod: Hub is deployed to prod
+
+    image_repo --> forked_repo: Contributor forks the image repo.
+    forked_repo --> image_repo: Contributor creates a PR.
+    image_repo --> image_test_build
+    image_test_build --> image_push_build: Test build passes and Datahub staff merge pull request
+    image_push_build --> pr_created
+    pr_created --> deploy_to_staging: Datahub staff review and merge to staging
+    deploy_to_staging --> contributor_tests
+    contributor_tests --> deploy_to_prod: Datahub staff create a PR to merge to prod
+```
 
 These steps will be explained in detail below.
 
